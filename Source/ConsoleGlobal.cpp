@@ -8,7 +8,34 @@
 
 #include "ConsoleGlobal.h"
 
-ConsoleGlobal * ConsoleGlobal::instance = NULL;
+ConsoleGlobal * ConsoleGlobal::instance = nullptr;
+
+ConsoleGlobal::ConsoleGlobal(){
+    consoleContrainer = new ComponentBoundsConstrainer();
+    consoleResizer = new ResizableEdgeComponent(this, consoleContrainer, ResizableEdgeComponent::topEdge);
+    addAndMakeVisible(consoleResizer);
+    consoleContrainer->setSizeLimits(getParentWidth(), 50, getParentWidth(), 150);
+}
+
+ConsoleGlobal::~ConsoleGlobal(){
+    
+}
+
+void ConsoleGlobal::paint (Graphics& g){
+    
+}
+
+void ConsoleGlobal::resized(){
+    //consoleComponent->setBounds(consol)
+    if (consoleComponent != nullptr) {
+        consoleComponent->setBounds(getLocalBounds());
+        consoleResizer->setBounds(0,
+                                  consoleComponent->getBounds().getY()-consoleComponent->getHeight(),
+                                  getLocalBounds().getWidth(),
+                                  8);
+    }
+    
+}
 
 void ConsoleGlobal::addText( String text )
 {
